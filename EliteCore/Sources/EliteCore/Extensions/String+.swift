@@ -7,4 +7,13 @@ public extension String {
         Array(zip(indices, str.indices))
             .count(where: { self[$0] != str[$1] })
     }
+
+    /// Returns the common characters used between `self` and `str`.
+    func intersection(with str: String) -> String {
+        String(
+            zip(indices, str.indices)
+                .filter { self[$0] == str[$1] }
+                .map { self[$0.0] }
+        )
+    }
 }
