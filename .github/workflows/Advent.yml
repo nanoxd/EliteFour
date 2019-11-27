@@ -1,0 +1,19 @@
+name: Advent
+
+on: [pull_request]
+
+jobs:
+  Test:
+    name: Advent Tests
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build
+        run: |
+          cd Advent
+          swift build
+      - name: Test
+        run: |
+          cd Advent
+          swift test 2>&1 | xcpretty
