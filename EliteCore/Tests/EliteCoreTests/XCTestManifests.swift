@@ -7,6 +7,7 @@ import XCTest
             testCase(RegexTests.allTests),
             testCase(Tuple2Tests.allTests),
             testCase(SequenceTests.allTests),
+            testCase(StringTests.allTests),
         ]
     }
 #endif
