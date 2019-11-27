@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - Sequence
+
 public extension Sequence {
     /// Infinitely cycles through `self`
     var cycled: AnyIterator<Element> {
@@ -13,5 +15,15 @@ public extension Sequence {
 
             return result
         }
+    }
+}
+
+// MARK: - Sequence + Hashable
+
+public extension Sequence where Element: Hashable {
+    /// Creates a histogram of the number of times a value is seen in a Sequence
+    func histogram() -> [Element: Int] {
+        Dictionary(grouping: self, by: { $0 })
+            .mapValues { $0.count }
     }
 }
