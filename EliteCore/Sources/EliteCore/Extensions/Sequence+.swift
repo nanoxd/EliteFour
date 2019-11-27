@@ -26,4 +26,9 @@ public extension Sequence where Element: Hashable {
         Dictionary(grouping: self, by: { $0 })
             .mapValues { $0.count }
     }
+
+    /// Returns the unique elements in the Sequence, unordered.
+    var unique: [Element] {
+        Array(Set(self))
+    }
 }

@@ -25,8 +25,16 @@ final class SequenceTests: XCTestCase {
         XCTAssertEqual(letterOccurance["s"], 2)
     }
 
+    func test_unique_uniquesArrays() {
+        let numbers = [1, 2, 1, 5, 10, 5]
+        let uniqueNumbers = numbers.unique
+
+        XCTAssertEqual(uniqueNumbers.count, 4)
+    }
+
     static var allTests = [
         ("test_cycled_cyclesThroughSequence", test_cycled_cyclesThroughSequence),
         ("test_histogram_displaysOccurrance", test_histogram_displaysOccurrance),
+        ("test_unique_uniquesArrays", test_unique_uniquesArrays),
     ]
 }
