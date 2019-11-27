@@ -17,3 +17,17 @@ jobs:
         run: |
           cd Advent
           swift test 2>&1 | xcpretty
+  core_test:
+    name: EliteCore Tests
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build
+        run: |
+          cd EliteCore
+          swift build
+      - name: Test
+        run: |
+          cd EliteCore
+          swift test 2>&1 | xcpretty
