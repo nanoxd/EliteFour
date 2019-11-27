@@ -11,7 +11,7 @@ let package = Package(
         .executable(name: "adv", targets: ["adv"]),
         .library(name: "Advent", targets: ["Advent"]),
         .library(name: "AdventFoundation", targets: ["AdventFoundation"]),
-        .library(name: "AOC2019", targets: ["AOC2019"])
+        .library(name: "AOC2019", targets: ["AOC2019"]),
     ],
     dependencies: [
     ],
@@ -24,6 +24,6 @@ let package = Package(
             name: "AdventFoundationTests",
             dependencies: ["AdventFoundation"]
         ),
-        .target(name: "AOC2019", dependencies: ["AdventFoundation"])
+        .target(name: "AOC2019", dependencies: ["AdventFoundation"]),
     ]
 )
