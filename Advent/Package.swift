@@ -13,10 +13,12 @@ let package = Package(
             name: "Advent",
             targets: ["Advent"]
         ),
+        .library(
+            name: "AdventFoundation",
+            targets: ["AdventFoundation"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
         .target(
@@ -30,6 +32,14 @@ let package = Package(
         .testTarget(
             name: "AdventTests",
             dependencies: ["Advent"]
+        ),
+        .target(
+            name: "AdventFoundation",
+            dependencies: []
+        ),
+        .testTarget(
+            name: "AdventFoundationTests",
+            dependencies: ["AdventFoundation"]
         ),
     ]
 )
