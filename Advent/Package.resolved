@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Nano",
+        "repositoryURL": "https://github.com/nanoxd/Nano",
+        "state": {
+          "branch": null,
+          "revision": "cc6bc0ed3277ac352db12fd795c7114a4da1384e",
+          "version": "0.0.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
