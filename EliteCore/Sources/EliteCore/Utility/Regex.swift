@@ -1,13 +1,21 @@
 import Foundation
 
 public struct Regex {
+    // MARK: - Convenience Patterns
+
     public static let integers = Regex(pattern: #"(-?\d+)"#)
 
+    // MARK: - Properties
+
     private let pattern: NSRegularExpression?
+
+    // MARK: - Initializers
 
     public init(pattern: String, options: NSRegularExpression.Options = []) {
         self.pattern = try? NSRegularExpression(pattern: pattern, options: options)
     }
+
+    // MARK: - API
 
     public func matches(_ string: String) -> Bool {
         guard let pattern = pattern else { return false }
@@ -39,11 +47,15 @@ public struct Regex {
     }
 }
 
+// MARK: - ExpressibleByStringLiteral
+
 extension Regex: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) { self.init(pattern: value) }
     public init(extendedGraphemeClusterLiteral value: String) { self.init(pattern: value) }
     public init(unicodeScalarLiteral value: String) { self.init(pattern: value) }
 }
+
+// MARK: - RegexMatch
 
 public struct RegexMatch {
     private let matches: [String?]
@@ -74,6 +86,8 @@ public struct RegexMatch {
     }
 }
 
+// MARK: - Operator Overloads
+
 public func ~= (left: Regex, right: String) -> Bool {
     left.matches(right)
 }
@@ -81,6 +95,8 @@ public func ~= (left: Regex, right: String) -> Bool {
 public func ~= (left: Regex, right: String) -> RegexMatch? {
     left.match(right)
 }
+
+// MARK: - Foundation Extensions
 
 public extension String {
     func match(_ pattern: String) -> RegexMatch {

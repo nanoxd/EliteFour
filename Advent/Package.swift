@@ -14,12 +14,13 @@ let package = Package(
         .library(name: "AOC2019", targets: ["AOC2019"]),
     ],
     dependencies: [
+        .package(path: "../EliteCore"),
     ],
     targets: [
         .target(name: "adv", dependencies: ["Advent"]),
         .target(name: "Advent", dependencies: ["AOC2019"]),
         .testTarget(name: "AdventTests", dependencies: ["Advent"]),
-        .target(name: "AdventFoundation", dependencies: []),
+        .target(name: "AdventFoundation", dependencies: ["EliteCore"]),
         .testTarget(
             name: "AdventFoundationTests",
             dependencies: ["AdventFoundation"]

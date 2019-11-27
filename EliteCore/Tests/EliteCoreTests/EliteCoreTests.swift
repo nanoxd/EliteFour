@@ -2,7 +2,7 @@
 import XCTest
 
 final class EliteCoreTests: XCTestCase {
-    func testExample() { }
+    func testExample() {}
 
     static var allTests = [
         ("testExample", testExample),
