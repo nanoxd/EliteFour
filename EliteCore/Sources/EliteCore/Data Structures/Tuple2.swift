@@ -1,10 +1,14 @@
-public typealias Pair<T> = Tuple2<T, T>
+import Foundation
 
-// MARK: - Tuple2
-
+/// A tuple containing two members of type `A` and `B`
 public struct Tuple2<A, B> {
+    // MARK: - Properties
+
     public let first: A
     public let second: B
+
+    // MARK: - Initializers
+
     public init(_ first: A, _ second: B) {
         self.first = first
         self.second = second

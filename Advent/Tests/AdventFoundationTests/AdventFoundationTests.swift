@@ -2,12 +2,9 @@
 import XCTest
 
 final class AdventFoundationTests: XCTestCase {
-    func testPairEquality() {
-        let pair = Pair(1, 2)
-        XCTAssertEqual(pair, Pair(1, 2))
-    }
+    func testExample() {}
 
     static var allTests = [
-        ("testPairEquality", testPairEquality),
+        ("testExample", testExample),
     ]
 }
