@@ -7,7 +7,7 @@ private let classNameRegex = Regex(pattern: #"AOC(\d+).Day(\d+)"#)
 
 open class Day: NSObject {
     private static let inputFiles: [Pair<Int>: String] = {
-        let root = URL(fileURLWithPath: "\(#file)").deletingLastPathComponent().deletingLastPathComponent()
+        let root = URL(fileURLWithPath: "\(#file)").deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: nil)
 
         var files = [Pair<Int>: String]()
