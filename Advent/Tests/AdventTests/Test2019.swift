@@ -7,13 +7,29 @@ class Test2019: XCTestCase {
         let (p1, p2) = d.run()
 
         XCTAssertEqual(p1, "3434390")
-        XCTAssertEqual(p2, "")
+        XCTAssertEqual(p2, "5148724")
+    }
 
-        // Examples
+    func test_day1_examples() {
+        let d = Day1()
         XCTAssertEqual(d.fuelRequired(mass: 12.0), 2)
         XCTAssertEqual(d.fuelRequired(mass: 14.0), 2)
         XCTAssertEqual(d.fuelRequired(mass: 1969.0), 654)
         XCTAssertEqual(d.fuelRequired(mass: 100_756.0), 33583)
+
+        // Part 2 Examples
+
+        XCTAssertEqual(d.fuelRequired(for: d.fuelRequired(mass: 14.0)), 2)
+
+        XCTAssertEqual(
+            d.fuelRequired(for: d.fuelRequired(mass: 1969.0)),
+            966
+        )
+
+        XCTAssertEqual(
+            d.fuelRequired(for: d.fuelRequired(mass: 100_756.0)),
+            50346
+        )
     }
 
     func testDay2() {

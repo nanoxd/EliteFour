@@ -15,10 +15,34 @@ final class Day1: Day {
     }
 
     override func part2() -> String {
-        ""
+        let fuelRequiredForEachModule = input.lines.integers
+            .map { fuelRequired(for: fuelRequired(mass: Double($0))) }
+
+             let totalFuelNeeded = fuelRequiredForEachModule.sum()
+
+        return "\(totalFuelNeeded)"
     }
 
     public func fuelRequired(mass: Double) -> Int {
         Int((mass / 3).rounded(.down)) - 2
+    }
+
+    func fuelRequired(for fuel: Int) -> Int {
+        var totalFuelRequired = fuel
+        var addedFuelRequirements = [fuel]
+
+        while totalFuelRequired >= 0 {
+            let newFuelRequired = fuelRequired(mass: Double(totalFuelRequired))
+
+            addedFuelRequirements.append(
+                newFuelRequired >= 0
+                    ? newFuelRequired
+                    : 0
+            )
+
+            totalFuelRequired = newFuelRequired
+        }
+
+        return addedFuelRequirements.sum()
     }
 }
