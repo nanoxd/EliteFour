@@ -18,7 +18,7 @@ final class Day1: Day {
         let fuelRequiredForEachModule = input.lines.integers
             .map { fuelRequired(for: fuelRequired(mass: Double($0))) }
 
-             let totalFuelNeeded = fuelRequiredForEachModule.sum()
+        let totalFuelNeeded = fuelRequiredForEachModule.sum()
 
         return "\(totalFuelNeeded)"
     }
