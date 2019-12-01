@@ -8,6 +8,12 @@ class Test2019: XCTestCase {
 
         XCTAssertEqual(p1, "")
         XCTAssertEqual(p2, "")
+
+        // Examples
+        XCTAssertEqual(d.fuelRequired(mass: 12.0), 2)
+        XCTAssertEqual(d.fuelRequired(mass: 14.0), 2)
+        XCTAssertEqual(d.fuelRequired(mass: 1969.0), 654)
+        XCTAssertEqual(d.fuelRequired(mass: 100_756.0), 33583)
     }
 
     func testDay2() {
