@@ -29,20 +29,18 @@ final class Day1: Day {
 
     func fuelRequired(for fuel: Int) -> Int {
         var totalFuelRequired = fuel
-        var addedFuelRequirements = [fuel]
+        var addedFuelRequirements = fuel
 
         while totalFuelRequired >= 0 {
             let newFuelRequired = fuelRequired(mass: Double(totalFuelRequired))
 
-            addedFuelRequirements.append(
-                newFuelRequired >= 0
-                    ? newFuelRequired
-                    : 0
-            )
+            addedFuelRequirements += newFuelRequired >= 0
+                ? newFuelRequired
+                : 0
 
             totalFuelRequired = newFuelRequired
         }
 
-        return addedFuelRequirements.sum()
+        return addedFuelRequirements
     }
 }
