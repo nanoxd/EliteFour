@@ -27,7 +27,7 @@ class Test2015: XCTestCase {
             let (p1, p2) = d.run()
 
             XCTAssertEqual(p1, "1598415")
-            XCTAssertEqual(p2, "")
+            XCTAssertEqual(p2, "3812909")
         }
     }
 

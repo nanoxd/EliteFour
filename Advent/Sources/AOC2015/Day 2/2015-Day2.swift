@@ -28,7 +28,14 @@ final class Day2: Day {
     }
 
     override func part2() -> String {
-        ""
+        let totalRibbonNeeded = dimensions
+            .reduce(into: 0) { totalRibbon, dimension in
+                let ribbonNeeded = ribbonSizeRequired(dimensions: dimension)
+
+                totalRibbon += ribbonNeeded.ribbonForPresent + ribbonNeeded.ribbonForBow
+            }
+
+        return "\(totalRibbonNeeded)"
     }
 
     func requiredWrappingPaper(dimensions: Dimensions) -> (wrappingPaper: Int, slack: Int) {
