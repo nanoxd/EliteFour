@@ -43,7 +43,7 @@ class Test2019: XCTestCase {
         measure {
             let (p1, p2) = d.run()
 
-            XCTAssertEqual(p1, "")
+            XCTAssertEqual(p1, "4570637")
             XCTAssertEqual(p2, "")
         }
     }
