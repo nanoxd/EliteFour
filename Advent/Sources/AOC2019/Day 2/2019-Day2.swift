@@ -12,8 +12,8 @@ final class Day2: Day {
     }
 
     override func part2() -> String {
-        let desiredOutput = 19690720
-        var nounVerbPair: (noun: Int, verb: Int)? = nil
+        let desiredOutput = 19_690_720
+        var nounVerbPair: (noun: Int, verb: Int)?
 
         for noun in 20...99 where nounVerbPair == nil {
             for verb in 20...99 {
