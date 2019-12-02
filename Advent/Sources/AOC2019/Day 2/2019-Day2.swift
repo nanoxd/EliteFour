@@ -1,8 +1,16 @@
 import EliteCore
 
 final class Day2: Day {
+    private lazy var programValues: [Int] = {
+        input.raw
+            .split(separator: ",")
+            .compactMap { Int($0) }
+    }()
+
     override func part1() -> String {
-        ""
+        let program = process(program: programValues)
+
+        return "\(program[0])"
     }
 
     override func part2() -> String {
