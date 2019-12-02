@@ -23,10 +23,36 @@ class Test2015: XCTestCase {
 
     func testDay2() {
         let d = Day2()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "1598415")
+            XCTAssertEqual(p2, "3812909")
+        }
+    }
+
+    func test_day2Part1_examples() {
+        let d = Day2()
+
+        let wrappingPaper1 = d.requiredWrappingPaper(dimensions: Dimensions(length: 2, width: 3, height: 4))
+        XCTAssertEqual(wrappingPaper1.wrappingPaper, 52)
+        XCTAssertEqual(wrappingPaper1.slack, 6)
+
+        let wrappingPaper2 = d.requiredWrappingPaper(dimensions: Dimensions(length: 1, width: 1, height: 10))
+        XCTAssertEqual(wrappingPaper2.wrappingPaper, 42)
+        XCTAssertEqual(wrappingPaper2.slack, 1)
+    }
+
+    func test_day2Part2_examples() {
+        let d = Day2()
+
+        let ribbonSize1 = d.ribbonSizeRequired(dimensions: Dimensions(length: 2, width: 3, height: 4))
+        XCTAssertEqual(ribbonSize1.ribbonForPresent, 10)
+        XCTAssertEqual(ribbonSize1.ribbonForBow, 24)
+
+        let ribbonSize2 = d.ribbonSizeRequired(dimensions: Dimensions(length: 1, width: 1, height: 10))
+        XCTAssertEqual(ribbonSize2.ribbonForPresent, 4)
+        XCTAssertEqual(ribbonSize2.ribbonForBow, 10)
     }
 
     func testDay3() {
