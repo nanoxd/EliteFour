@@ -6,9 +6,9 @@ class Test2015: XCTestCase {
         let d = Day1()
         measure {
             let (p1, p2) = d.run()
-            
+
             XCTAssertEqual(p1, "232")
-            XCTAssertEqual(p2, "")
+            XCTAssertEqual(p2, "1783")
         }
     }
 

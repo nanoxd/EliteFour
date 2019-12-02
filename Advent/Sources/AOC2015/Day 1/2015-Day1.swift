@@ -4,7 +4,20 @@ final class Day1: Day {
     }
 
     override func part2() -> String {
-        ""
+        var currentFloor = 0
+
+        let firstBasementIndex = (Array(input.raw)
+            .firstIndex(where: { character in
+                if shouldGoUp(String(character)) {
+                    currentFloor += 1
+                } else {
+                    currentFloor -= 1
+                }
+
+                return currentFloor == -1
+            }) ?? 0) + 1
+
+        return "\(firstBasementIndex)"
     }
 
     func shouldGoUp(_ str: String) -> Bool {
