@@ -28,7 +28,15 @@ public final class Input: StringInput {
 
     public lazy var trimmed: Input = { Input(raw.trimmingCharacters(in: .whitespacesAndNewlines)) }()
     public lazy var lines: [Line] = { raw.components(separatedBy: .newlines).map { Line($0) } }()
-    public lazy var words: [Word] = { raw.components(separatedBy: .whitespaces).filter { $0.isEmpty == false }.map { Word($0) } }()
+    public lazy var words: [Word] = {
+        raw.components(separatedBy: .whitespaces)
+            .filter { $0.isEmpty == false }
+            .map { Word($0) }
+    }()
+    public lazy var integers: [Int] = {
+        let matches = Regex.integers.matches(in: raw)
+        return matches.compactMap { $0.int(1) }
+    }()
 
     public lazy var rawLines: [String] = { lines.raw }()
     public lazy var rawWords: [String] = { words.raw }()

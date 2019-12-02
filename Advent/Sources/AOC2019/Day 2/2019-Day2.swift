@@ -2,9 +2,7 @@ import EliteCore
 
 final class Day2: Day {
     private lazy var programValues: [Int] = {
-        input.raw
-            .split(separator: ",")
-            .compactMap { Int($0) }
+        input.integers
     }()
 
     override func part1() -> String {
