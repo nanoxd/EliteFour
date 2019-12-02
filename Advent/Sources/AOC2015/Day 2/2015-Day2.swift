@@ -2,8 +2,8 @@
 final class Day2: Day {
     private let dimensionRegex = Regex(pattern: #"(\d+)x(\d+)x(\d+)"#)
 
-    override func part1() -> String {
-        let dimensions: [Dimensions] = input.lines
+    private lazy var dimensions: [Dimensions] = {
+        input.lines
             .compactMap { (line: Line) -> RegexMatch? in
                 dimensionRegex.match(line.raw)
             }
@@ -14,7 +14,9 @@ final class Day2: Day {
                     height: dimensionMatch.int(3) ?? 0
                 )
             }
+    }()
 
+    override func part1() -> String {
         let totalWrappingPaperRequired = dimensions
             .reduce(into: 0) { totalWrappingPaper, dimension in
                 let wrappingPaperRequired = requiredWrappingPaper(dimensions: dimension)
@@ -42,10 +44,28 @@ final class Day2: Day {
 
         return (wrappingPaper: wrappingPaper, slack: slack)
     }
+
+    func ribbonSizeRequired(dimensions: Dimensions) -> (ribbonForPresent: Int, ribbonForBow: Int) {
+        let ribbonForPresent = [dimensions.length, dimensions.width, dimensions.height]
+            .lazy
+            .sorted()
+            .prefix(2)
+            .map { $0 + $0 }
+            .sum()
+
+        return (
+            ribbonForPresent: ribbonForPresent,
+            ribbonForBow: dimensions.cubicVolume
+        )
+    }
 }
 
 struct Dimensions {
     let length: Int
     let width: Int
     let height: Int
+
+    var cubicVolume: Int {
+        length * width * height
+    }
 }
