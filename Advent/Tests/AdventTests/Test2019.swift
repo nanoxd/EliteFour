@@ -40,10 +40,28 @@ class Test2019: XCTestCase {
 
     func testDay2() {
         let d = Day2()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "")
+            XCTAssertEqual(p2, "")
+        }
+    }
+
+    func test_day2Part1_examples() {
+        let d = Day2()
+
+        let stream1 = d.process(program: [1, 0, 0, 0, 99])
+        XCTAssertEqual(stream1, [2, 0, 0, 0, 99])
+
+        let stream2 = d.process(program: [2, 3, 0, 3, 99])
+        XCTAssertEqual(stream2, [2, 3, 0, 6, 99])
+
+        let stream3 = d.process(program: [2, 4, 4, 5, 99, 0])
+        XCTAssertEqual(stream3, [2, 4, 4, 5, 99, 9801])
+
+        let stream4 = d.process(program: [1, 1, 1, 4, 99, 5, 6, 0, 99])
+        XCTAssertEqual(stream4, [30, 1, 1, 4, 2, 5, 6, 0, 99])
     }
 
     func testDay3() {
