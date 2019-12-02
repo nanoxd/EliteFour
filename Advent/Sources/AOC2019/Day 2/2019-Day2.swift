@@ -14,7 +14,27 @@ final class Day2: Day {
     }
 
     override func part2() -> String {
-        ""
+        let desiredOutput = 19690720
+        var nounVerbPair: (noun: Int, verb: Int)? = nil
+
+        for noun in 20...99 where nounVerbPair == nil {
+            for verb in 20...99 {
+                var currentProgram = programValues
+                currentProgram[1] = noun
+                currentProgram[2] = verb
+
+                let memory = process(program: currentProgram)
+                if memory[0] == desiredOutput {
+                    nounVerbPair = (noun: noun, verb: verb)
+                }
+            }
+        }
+
+        guard let pair = nounVerbPair else {
+            fatalError("Pair should have been determined")
+        }
+
+        return "\(100 * pair.noun + pair.verb)"
     }
 
     func process(program: [Int]) -> [Int] {
