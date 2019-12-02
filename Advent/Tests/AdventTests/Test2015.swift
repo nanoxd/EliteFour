@@ -4,10 +4,21 @@ import XCTest
 class Test2015: XCTestCase {
     func testDay1() {
         let d = Day1()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "232")
+            XCTAssertEqual(p2, "1783")
+        }
+    }
+
+    func test_day1Part1_examples() {
+        let d = Day1()
+
+        XCTAssertEqual(d.determineNumberOfFloors("(())"), 0)
+        XCTAssertEqual(d.determineNumberOfFloors("()()"), 0)
+        XCTAssertEqual(d.determineNumberOfFloors("((("), 3)
+        XCTAssertEqual(d.determineNumberOfFloors("(()(()("), 3)
     }
 
     func testDay2() {
