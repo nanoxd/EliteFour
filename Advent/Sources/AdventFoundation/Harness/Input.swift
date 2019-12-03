@@ -33,6 +33,7 @@ public final class Input: StringInput {
             .filter { $0.isEmpty == false }
             .map { Word($0) }
     }()
+
     public lazy var integers: [Int] = {
         let matches = Regex.integers.matches(in: raw)
         return matches.compactMap { $0.int(1) }
