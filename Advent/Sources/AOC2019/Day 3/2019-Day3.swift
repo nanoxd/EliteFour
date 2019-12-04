@@ -111,28 +111,6 @@ extension Sequence {
     }
 }
 
-struct Point: Equatable, Hashable {
-    let x: Int
-    let y: Int
-
-    static let zero = Point(x: 0, y: 0)
-
-    func manhattanDistance(to other: Point) -> Int {
-        abs(other.x - x) + abs(other.y - y)
-    }
-
-    func applying(translationX: Int, translationY: Int) -> Point {
-        self + Point(x: translationX, y: translationY)
-    }
-
-    public static func + (lhs: Point, rhs: Point) -> Point {
-        Point(
-            x: lhs.x + rhs.x,
-            y: lhs.y + rhs.y
-        )
-    }
-}
-
 extension Point {
     func byMoving(direction: Wire.Direction) -> Point {
         switch direction {

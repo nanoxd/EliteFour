@@ -8,6 +8,7 @@ import XCTest
             testCase(Tuple2Tests.allTests),
             testCase(SequenceTests.allTests),
             testCase(StringTests.allTests),
+            testCase(PointTests.allTests),
         ]
     }
 #endif
