@@ -22,7 +22,7 @@ final class Day3: Day {
         let segments = matches.compactMap { match -> Wire.Segment? in
             guard
                 let directionString = match[1],
-                let direction = Wire.Direction(rawValue: directionString),
+                let direction = CardinalDirection(rawValue: directionString),
                 let length = match.int(2) else {
                 return nil
             }
@@ -36,29 +36,8 @@ final class Day3: Day {
 
 struct Wire {
     struct Segment {
-        let direction: Direction
+        let direction: CardinalDirection
         let length: Int
-    }
-
-    enum Direction: Equatable, CaseIterable {
-        case right
-        case left
-        case down
-        case up
-
-        init?(rawValue: String) {
-            switch rawValue {
-            case "R":
-                self = .right
-            case "L":
-                self = .left
-            case "D":
-                self = .down
-            case "U":
-                self = .up
-            default: return nil
-            }
-        }
     }
 
     var segments: [Segment]
@@ -111,13 +90,18 @@ extension Sequence {
     }
 }
 
-extension Point {
-    func byMoving(direction: Wire.Direction) -> Point {
-        switch direction {
-        case .right: return applying(translationX: 1, translationY: 0)
-        case .left: return applying(translationX: -1, translationY: 0)
-        case .up: return applying(translationX: 0, translationY: 1)
-        case .down: return applying(translationX: 0, translationY: -1)
+extension CardinalDirection {
+    init?(rawValue: String) {
+        switch rawValue {
+        case "R":
+            self = .east
+        case "L":
+            self = .west
+        case "D":
+            self = .south
+        case "U":
+            self = .north
+        default: return nil
         }
     }
 }
