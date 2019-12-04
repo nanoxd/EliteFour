@@ -6,7 +6,9 @@ final class Day3: Day {
     }()
 
     override func part1() -> String {
-        ""
+        let distance = wires[0].intersects(wire: wires[1])
+
+        return "\(distance ?? 0)"
     }
 
     override func part2() -> String {
@@ -35,24 +37,6 @@ struct Wire {
     struct Segment {
         let direction: Direction
         let length: Int
-
-        var directionalLength: CGFloat {
-            switch direction {
-            case .left, .down:
-                return -CGFloat(length)
-            case .right, .up:
-                return CGFloat(length)
-            }
-        }
-
-        var transform: CGAffineTransform {
-            switch direction {
-            case .right, .left:
-                return CGAffineTransform(translationX: directionalLength, y: 0)
-            case .up, .down:
-                return CGAffineTransform(translationX: 0, y: directionalLength)
-            }
-        }
     }
 
     enum Direction: Equatable, CaseIterable {
@@ -78,26 +62,27 @@ struct Wire {
 
     var segments: [Segment]
 
-    func breadcrumbs() -> [CGPoint] {
-        segments
+    func breadcrumbs() -> Set<Point> {
+        Set(segments
+            .lazy
             .flatMap { segment in
                 (0..<segment.length).replay(segment)
             }
-            .reduce(into: [CGPoint.zero]) { points, segment in
+            .reduce(into: [Point.zero]) { points, segment in
                 points.append(
                     points[points.endIndex - 1].byMoving(direction: segment.direction)
                 )
-            }
+            })
     }
 
     /// Returns the intersection point between `self` and `wire`.
     func intersects(wire: Wire) -> Int? {
         let path = breadcrumbs()
 
-        return wire.breadcrumbs()
-            .dropFirst()
-            .filter { path.contains($0) }
-            .map { $0.manhattanDistance }
+        return wire.breadcrumbs().intersection(path)
+            .lazy
+            .map { $0.manhattanDistance(to: .zero) }
+            .filter { $0 != 0 }
             .min()
     }
 }
@@ -108,13 +93,35 @@ extension Sequence {
     }
 }
 
-extension CGPoint {
-    func byMoving(direction: Wire.Direction) -> CGPoint {
+struct Point: Equatable, Hashable {
+    let x: Int
+    let y: Int
+
+    static let zero = Point(x: 0, y: 0)
+
+    func manhattanDistance(to other: Point) -> Int {
+        abs(other.x - x) + abs(other.y - y)
+    }
+
+    func applying(translationX: Int, translationY: Int) -> Point {
+        return self + Point(x: translationX, y: translationY)
+    }
+
+    public static func +(lhs: Point, rhs: Point) -> Point {
+        Point(
+            x: lhs.x + rhs.x,
+            y: lhs.y + rhs.y
+        )
+    }
+}
+
+extension Point {
+    func byMoving(direction: Wire.Direction) -> Point {
         switch direction {
-        case .right: return applying(.init(translationX: 1, y: 0))
-        case .left: return applying(.init(translationX: -1, y: 0))
-        case .up: return applying(.init(translationX: 0, y: 1))
-        case .down: return applying(.init(translationX: 0, y: -1))
+        case .right: return applying(translationX: 1, translationY: 0)
+        case .left: return applying(translationX: -1, translationY: 0)
+        case .up: return applying(translationX: 0, translationY: 1)
+        case .down: return applying(translationX: 0, translationY: -1)
         }
     }
 }
