@@ -62,8 +62,8 @@ struct Wire {
 
     var segments: [Segment]
 
-    func breadcrumbs() -> Set<Point> {
-        Set(segments
+    func breadcrumbs() -> [Point] {
+        segments
             .lazy
             .flatMap { segment in
                 (0..<segment.length).replay(segment)
@@ -72,18 +72,34 @@ struct Wire {
                 points.append(
                     points[points.endIndex - 1].byMoving(direction: segment.direction)
                 )
-            })
+            }
     }
 
     /// Returns the intersection point between `self` and `wire`.
     func intersects(wire: Wire) -> Int? {
-        let path = breadcrumbs()
+        let path = Set(breadcrumbs())
 
-        return wire.breadcrumbs().intersection(path)
+        return Set(wire.breadcrumbs()).intersection(path)
             .lazy
             .map { $0.manhattanDistance(to: .zero) }
             .filter { $0 != 0 }
             .min()
+    }
+
+    func fewestCombinedSteps(to wire: Wire) -> Int? {
+        let wirePath = breadcrumbs()
+        let otherWirePath = wire.breadcrumbs()
+
+        let shortestIntersection = Set(wirePath)
+            .intersection(Set(otherWirePath))
+            .map {
+                wirePath.firstIndex(of: $0)! + otherWirePath.firstIndex(of: $0)!
+            }
+            .filter { $0 != 0 }
+            .sorted()
+            .first
+
+        return shortestIntersection
     }
 }
 
@@ -104,10 +120,10 @@ struct Point: Equatable, Hashable {
     }
 
     func applying(translationX: Int, translationY: Int) -> Point {
-        return self + Point(x: translationX, y: translationY)
+        self + Point(x: translationX, y: translationY)
     }
 
-    public static func +(lhs: Point, rhs: Point) -> Point {
+    public static func + (lhs: Point, rhs: Point) -> Point {
         Point(
             x: lhs.x + rhs.x,
             y: lhs.y + rhs.y
