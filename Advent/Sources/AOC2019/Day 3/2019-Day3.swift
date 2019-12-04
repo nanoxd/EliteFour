@@ -34,6 +34,50 @@ final class Day3: Day {
     }
 }
 
+struct HSegment {
+    let y: Int
+    let minX: Int
+    let maxX: Int
+    let wireIndex: Int
+
+    let steps: Int
+    let startX: Int
+}
+
+struct VSegment {
+    let x: Int
+    let minY: Int
+    let maxY: Int
+    let wireIndex: Int
+
+    let steps: Int
+    let startY: Int
+}
+
+func findIntersections(horizontalSegments: [HSegment], verticalSegments: [VSegment]) -> [Point] {
+    var currentHorizontalSegments: [HSegment] = []
+    var result: [Point] = []
+
+    let horizontalSegments = horizontalSegments.sorted(by: { seg1, seg2 in
+        seg1.minX > seg2.minX
+    })
+
+    let verticalSegments = verticalSegments.sorted(by: { seg1, seg2 in
+        seg1.x > seg2.x
+    })
+
+    var currentHorizontalSegmentSlice = horizontalSegments[...]
+
+    for verticalSegment in verticalSegments {
+        let x = verticalSegment.x
+
+        let segment = currentHorizontalSegmentSlice.first
+        currentHorizontalSegmentSlice = currentHorizontalSegmentSlice.dropFirst()
+    }
+
+    return result
+}
+
 struct Wire {
     struct Segment {
         let direction: CardinalDirection
