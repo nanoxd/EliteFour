@@ -20,7 +20,40 @@ final class Day4: Day {
     }
 
     func numberOfUniquePasswords(within range: Range<Int>, shouldValidateRepeatedDigits: Bool = false) -> Int {
-        range.count { isValid(password: $0, shouldValidateRepeatedDigits: shouldValidateRepeatedDigits) }
+        range.count { isValidFast(password: $0, shouldValidateRepeatedDigits: shouldValidateRepeatedDigits) }
+    }
+
+    func isValidFast(password: Int, shouldValidateRepeatedDigits: Bool = false) -> Bool {
+        var repeatCount = 1
+        var hasDouble = false
+        var previousDigit = password % 10
+        var password = password / 10
+
+        while password != 0 {
+            let digit = password % 10
+
+            if digit > previousDigit {
+                return false
+            } else if digit == previousDigit {
+                repeatCount += 1
+
+                if !shouldValidateRepeatedDigits, repeatCount == 2 {
+                    hasDouble = true
+                }
+            } else if digit < previousDigit {
+                if shouldValidateRepeatedDigits, repeatCount == 2 {
+                    hasDouble = true
+                }
+
+                repeatCount = 1
+            }
+
+            password = password / 10
+            previousDigit = digit
+        }
+
+        return hasDouble
+            || (shouldValidateRepeatedDigits ? repeatCount == 2 : false)
     }
 
     func isValid(password: Int, shouldValidateRepeatedDigits: Bool = false) -> Bool {
