@@ -35,3 +35,18 @@ public struct Point: Equatable, Hashable {
         )
     }
 }
+
+// MARK: - Point + Direction
+
+public extension Point {
+    /// Moves in a given `direction` by 1.
+    /// - Parameter direction: Cardinal direction to move towards.
+    func byMoving(direction: CardinalDirection) -> Point {
+        switch direction {
+        case .east: return applying(translationX: 1, translationY: 0)
+        case .west: return applying(translationX: -1, translationY: 0)
+        case .north: return applying(translationX: 0, translationY: 1)
+        case .south: return applying(translationX: 0, translationY: -1)
+        }
+    }
+}
