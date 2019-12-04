@@ -17,3 +17,21 @@ public extension String {
         )
     }
 }
+
+// MARK: - StringProtocol
+
+public extension StringProtocol {
+    var digits: [Int] { compactMap { $0.wholeNumberValue } }
+}
+
+// MARK: - LosslessStringConvertible
+
+public extension LosslessStringConvertible {
+    var string: String { .init(self) }
+}
+
+// MARK: - String + Numeric
+
+public extension Numeric where Self: LosslessStringConvertible {
+    var digits: [Int] { string.digits }
+}
