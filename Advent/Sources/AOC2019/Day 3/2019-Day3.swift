@@ -12,7 +12,8 @@ final class Day3: Day {
     }
 
     override func part2() -> String {
-        ""
+        let fewestCombinedSteps = wires[0].fewestCombinedSteps(to: wires[1])
+        return "\(fewestCombinedSteps ?? 0)"
     }
 
     func parseLine(_ string: String) -> Wire {
@@ -92,6 +93,7 @@ struct Wire {
 
         let shortestIntersection = Set(wirePath)
             .intersection(Set(otherWirePath))
+            .lazy
             .map {
                 wirePath.firstIndex(of: $0)! + otherWirePath.firstIndex(of: $0)!
             }

@@ -70,7 +70,7 @@ class Test2019: XCTestCase {
             let (p1, p2) = d.run()
 
             XCTAssertEqual(p1, "1431")
-            XCTAssertEqual(p2, "")
+            XCTAssertEqual(p2, "48012")
         }
     }
 
