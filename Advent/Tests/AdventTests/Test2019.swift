@@ -145,10 +145,25 @@ class Test2019: XCTestCase {
 
     func testDay4() {
         let d = Day4()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "")
+            XCTAssertEqual(p2, "")
+        }
+    }
+
+    func test_day4Part1_examples() {
+        let day = Day4()
+        XCTAssertTrue(day.isValid(password: 111111))
+        XCTAssertTrue(day.isValid(password: 122345))
+        XCTAssertFalse(day.isValid(password: 223450))
+        XCTAssertFalse(day.isValid(password: 123789))
+
+        XCTAssertEqual(
+            day.numberOfUniquePasswords(within: 123456..<123467),
+            1
+        )
     }
 
     func testDay5() {
