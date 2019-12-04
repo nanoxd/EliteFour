@@ -24,32 +24,29 @@ final class Day4: Day {
     }
 
     func isValid(password: Int, shouldValidateRepeatedDigits: Bool = false) -> Bool {
-        let string = String(password)
+        let digits = password.digits
 
-        guard string.count == 6 else {
+        guard digits.count == 6 else {
             return false
         }
 
-        let zippedStrings = zip(
-            Array(string),
-            Array(string).dropFirst()
-        )
+        let zipped = zip(digits, digits.dropFirst())
 
-        let isInIncreasingOrder = zippedStrings.reduce(into: true) { isIncrementing, stringPair in
+        let isInIncreasingOrder = zipped.reduce(into: true) { isIncrementing, intPair in
             isIncrementing = isIncrementing
-                && Int(String(stringPair.0))! <= Int(String(stringPair.1))!
+                && intPair.0 <= intPair.1
         }
 
         guard isInIncreasingOrder else {
             return false
         }
 
-        let repeatedDigits: [Pair<String>: Int] = zippedStrings
-            .reduce(into: [:]) { result, strings in
-                let isRepeated = strings.0 == strings.1
+        let repeatedDigits: [Pair<Int>: Int] = zipped
+            .reduce(into: [:]) { result, ints in
+                let isRepeated = ints.0 == ints.1
 
                 if isRepeated {
-                    let pair = Pair(String(strings.0), String(strings.1))
+                    let pair = Pair(ints.0, ints.1)
                     result[pair, default: 0] += 1
                 }
             }
