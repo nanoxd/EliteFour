@@ -40,9 +40,17 @@ final class PointTests: XCTestCase {
         XCTAssertEqual(Point(x: 1, y: -5) + Point(x: -3, y: -3), Point(x: -2, y: -8))
     }
 
+    func test_byMoving_inAllDirections() {
+        XCTAssertEqual(Point.zero.byMoving(direction: .east), Point(x: 1, y: 0))
+        XCTAssertEqual(Point.zero.byMoving(direction: .west), Point(x: -1, y: 0))
+        XCTAssertEqual(Point.zero.byMoving(direction: .north), Point(x: 0, y: 1))
+        XCTAssertEqual(Point.zero.byMoving(direction: .south), Point(x: 0, y: -1))
+    }
+
     static var allTests = [
         ("test_manhattanDistance", test_manhattanDistance),
         ("test_applying_transform", test_applying_transform),
         ("test_addition", test_addition),
+        ("test_byMoving_inAllDirections", test_byMoving_inAllDirections),
     ]
 }
