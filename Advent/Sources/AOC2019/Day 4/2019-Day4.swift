@@ -9,7 +9,8 @@ final class Day4: Day {
     }()
 
     override func part1() -> String {
-        ""
+        let n = numberOfUniquePasswords(within: rangeValues)
+        return "\(n)"
     }
 
     override func part2() -> String {
