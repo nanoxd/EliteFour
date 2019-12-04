@@ -26,10 +26,23 @@ final class Day4: Day {
     func isValid(password: Int, shouldValidateRepeatedDigits: Bool = false) -> Bool {
         let string = String(password)
 
+        guard string.count == 6 else {
+            return false
+        }
+
         let zippedStrings = zip(
             Array(string),
             Array(string).dropFirst()
         )
+
+        let isInIncreasingOrder = zippedStrings.reduce(into: true) { isIncrementing, stringPair in
+            isIncrementing = isIncrementing
+                && Int(String(stringPair.0))! <= Int(String(stringPair.1))!
+        }
+
+        guard isInIncreasingOrder else {
+            return false
+        }
 
         let repeatedDigits: [Pair<String>: Int] = zippedStrings
             .reduce(into: [:]) { result, strings in
@@ -42,18 +55,15 @@ final class Day4: Day {
             }
 
         let hasRepeatDigit = repeatedDigits.contains { $0.value >= 1 }
+
+        guard hasRepeatDigit else {
+            return false
+        }
+
         let doesRepeatInLargerGroup = shouldValidateRepeatedDigits
             ? !(repeatedDigits.count { $0.value == 1 } >= 1)
             : false
 
-        let isInIncreasingOrder = zippedStrings.reduce(into: true) { isIncrementing, stringPair in
-            isIncrementing = isIncrementing
-                && Int(String(stringPair.0))! <= Int(String(stringPair.1))!
-        }
-
-        return string.count == 6
-            && hasRepeatDigit
-            && isInIncreasingOrder
-            && !doesRepeatInLargerGroup
+        return !doesRepeatInLargerGroup
     }
 }
