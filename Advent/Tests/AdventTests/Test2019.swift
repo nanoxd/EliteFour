@@ -97,35 +97,25 @@ class Test2019: XCTestCase {
         let testInput = ["R75,D30,R83,U83,L12,D49,R71,U7,L72", "U62,R66,U55,R34,D71,R55,D58,R83"]
             .map(day.parseLine(_:))
 
-        let breadcrumbs1 = testInput.first!.breadcrumbs()
-        let breadcrumbs2 = testInput.last!.breadcrumbs()
-
-        let distance = breadcrumbs2
-            .dropFirst()
-            .filter { breadcrumbs1.contains($0) }
-            .map { $0.manhattanDistance }
-            .min()
+        let wire1 = testInput.first!
+        let wire2 = testInput.last!
+        let distance = wire1.intersects(wire: wire2)
 
         XCTAssertEqual(distance, 159)
     }
 
     func test_day3Part1_example2() {
-          let day = Day3()
+        let day = Day3()
 
-          let testInput = ["R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7"]
-              .map(day.parseLine(_:))
+        let testInput = ["R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7"]
+            .map(day.parseLine(_:))
 
-          let breadcrumbs1 = testInput.first!.breadcrumbs()
-          let breadcrumbs2 = testInput.last!.breadcrumbs()
+        let wire1 = testInput.first!
+        let wire2 = testInput.last!
+        let distance = wire1.intersects(wire: wire2)
 
-          let distance = breadcrumbs2
-              .dropFirst()
-              .filter { breadcrumbs1.contains($0) }
-              .map { $0.manhattanDistance }
-              .min()
-
-          XCTAssertEqual(distance, 135)
-      }
+        XCTAssertEqual(distance, 135)
+    }
 
     func testDay4() {
         let d = Day4()

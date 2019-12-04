@@ -89,6 +89,17 @@ struct Wire {
                 )
             }
     }
+
+    /// Returns the intersection point between `self` and `wire`.
+    func intersects(wire: Wire) -> Int? {
+        let path = breadcrumbs()
+
+        return wire.breadcrumbs()
+            .dropFirst()
+            .filter { path.contains($0) }
+            .map { $0.manhattanDistance }
+            .min()
+    }
 }
 
 extension Sequence {
