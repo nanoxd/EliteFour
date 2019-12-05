@@ -3,31 +3,114 @@ import Foundation
 struct IntCode {
     // MARK: - Types
 
+    enum Mode: Int {
+        case positional = 0
+        case immediate = 1
+    }
+
     struct Op: Hashable {
         // MARK: - Properties
 
         let instruction: Int
-        let run: (_ counter: inout Int, _ memory: inout [Int]) -> Void
+        let run: (_ counter: inout Int, _ io: inout Int, _ memory: inout [Int]) -> Void
 
         // MARK: - Operations
 
-        static let add = Op(instruction: 1) { pointerCounter, memory in
-            let pointer1 = memory[pointerCounter + 1]
-            let pointer2 = memory[pointerCounter + 2]
+        static let add = Op(instruction: 1) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
             let register = memory[pointerCounter + 3]
-            memory[register] = memory[pointer1] + memory[pointer2]
+            memory[register] = params[0] + params[1]
             pointerCounter += 4
         }
 
-        static let multiply = Op(instruction: 2) { pointerCounter, memory in
-            let pointer1 = memory[pointerCounter + 1]
-            let pointer2 = memory[pointerCounter + 2]
+        static let multiply = Op(instruction: 2) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
             let register = memory[pointerCounter + 3]
-            memory[register] = memory[pointer1] * memory[pointer2]
+            memory[register] = params[0] * params[1]
             pointerCounter += 4
         }
 
-        static let halt = Op(instruction: 99) { $0 = $1.count }
+        static let set = Op(instruction: 3) { pointerCounter, io, memory in
+            let register = memory[pointerCounter + 1]
+            memory[register] = io
+            pointerCounter += 2
+        }
+
+        static let get = Op(instruction: 4) { pointerCounter, io, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 1)
+            io = params[0]
+            pointerCounter += 2
+        }
+
+        static let jumpIfTrue = Op(instruction: 5) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 2)
+            let shouldJump = params[0] != 0
+
+            if shouldJump {
+                pointerCounter = params[1]
+            } else {
+                pointerCounter += 3
+            }
+        }
+
+        static let jumpIfFalse = Op(instruction: 6) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 2)
+            let shouldJump = params[0] == 0
+
+            if shouldJump {
+                pointerCounter = params[1]
+            } else {
+                pointerCounter += 3
+            }
+        }
+
+        static let lessThan = Op(instruction: 7) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
+            let register = memory[pointerCounter + 3]
+
+            memory[register] = params[0] < params[1]
+                ? 1 : 0
+
+            pointerCounter += 4
+        }
+
+        static let equals = Op(instruction: 8) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
+            let register = memory[pointerCounter + 3]
+
+            memory[register] = params[0] == params[1]
+                ? 1 : 0
+
+            pointerCounter += 4
+        }
+
+        static let halt = Op(instruction: 99) { $0 = $2.count }
+
+        // MARK: - Utility
+
+        static func interpret(pointerCounter: Int, memory: [Int], arguments: Int) -> [Int] {
+            var op = memory[pointerCounter]
+
+            // 1002 => 02
+            op /= 100
+
+            var modes: [Mode] = op.digits.map { Mode(rawValue: $0)! }
+
+            // Observe v1 behavior
+            while modes.count < arguments {
+                modes.insert(.positional, at: 0)
+            }
+
+            return modes
+                .reversed()
+                .enumerated()
+                .map { (index, mode) -> Int in
+                    let value = memory[pointerCounter + index + 1]
+                    return mode == .positional
+                        ? memory[value]
+                        : value
+                }
+        }
 
         // MARK: - Equatable & Hashable
 
@@ -54,20 +137,21 @@ struct IntCode {
 
     // MARK: - API
 
-    func run() -> [Int] {
+    func run(input: Int = 0) -> ([Int], Int) {
         var pointerCounter = 0
+        var io = input
         var mem = memory
 
         while pointerCounter < mem.count {
-            let instruction = mem[pointerCounter]
+            let instruction = mem[pointerCounter] % 100
 
             guard let operation = operations[instruction] else {
                 fatalError("Invalid Instruction: \(instruction)")
             }
 
-            operation.run(&pointerCounter, &mem)
+            operation.run(&pointerCounter, &io, &mem)
         }
 
-        return mem
+        return (mem, io)
     }
 }

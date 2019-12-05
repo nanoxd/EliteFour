@@ -175,10 +175,34 @@ class Test2019: XCTestCase {
 
     func testDay5() {
         let d = Day5()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "9961446")
+            XCTAssertEqual(p2, "742621")
+        }
+    }
+
+    func test_day5_examples() {
+        let day = Day5()
+
+        XCTAssertEqual(
+            day.process(memory: [3, 0, 4, 0, 99]).0,
+            [0, 0, 4, 0, 99]
+        )
+
+        XCTAssertEqual(
+            day.process(memory: [1002, 4, 3, 4, 33]).0,
+            [1002, 4, 3, 4, 99]
+        )
+
+        XCTAssertEqual(
+            day.process(
+                memory: [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8],
+                addingOperations: [.equals, .jumpIfTrue, .jumpIfFalse, .lessThan]
+            ).0,
+            [3, 9, 8, 9, 10, 9, 4, 9, 99, 0, 8]
+        )
     }
 
     func testDay6() {

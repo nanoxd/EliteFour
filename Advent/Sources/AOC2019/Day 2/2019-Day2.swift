@@ -37,6 +37,6 @@ final class Day2: Day {
 
     func process(program: [Int]) -> [Int] {
         let intcode = IntCode(memory: program, supportedOperations: [.add, .multiply, .halt])
-        return intcode.run()
+        return intcode.run().0
     }
 }
