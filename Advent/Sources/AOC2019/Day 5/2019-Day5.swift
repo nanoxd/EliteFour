@@ -9,11 +9,18 @@ final class Day5: Day {
     }
 
     override func part2() -> String {
-        ""
+        let diagnosticCode = process(
+            memory: programValues,
+            addingOperations: [.equals, .jumpIfFalse, .jumpIfTrue, .lessThan],
+            input: 5
+        )
+
+        return "\(diagnosticCode.1)"
     }
 
-    func process(memory: [Int], input: Int = 0) -> ([Int], Int) {
-        let intcode = IntCode(memory: memory, supportedOperations: [.add, .multiply, .get, .set, .halt])
+    func process(memory: [Int], addingOperations ops: Set<IntCode.Op> = [], input: Int = 0) -> ([Int], Int) {
+        let operations = ops.union([IntCode.Op.add, .multiply, .get, .set, .halt])
+        let intcode = IntCode(memory: memory, supportedOperations: operations)
         return intcode.run(input: input)
     }
 }
