@@ -181,6 +181,15 @@ class Test2019: XCTestCase {
         XCTAssertEqual(p2, "")
     }
 
+    func test_day5_examples() {
+        let day = Day5()
+
+        XCTAssertEqual(
+            day.process(memory: [3, 0, 4, 0, 99]),
+            [0, 0, 4, 0, 99]
+        )
+    }
+
     func testDay6() {
         let d = Day6()
         let (p1, p2) = d.run()

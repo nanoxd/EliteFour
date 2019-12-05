@@ -3,6 +3,11 @@ import Foundation
 struct IntCode {
     // MARK: - Types
 
+    enum Mode {
+        case positional
+        case immediate
+    }
+
     struct Op: Hashable {
         // MARK: - Properties
 
@@ -25,6 +30,18 @@ struct IntCode {
             let register = memory[pointerCounter + 3]
             memory[register] = memory[pointer1] * memory[pointer2]
             pointerCounter += 4
+        }
+
+        static let set = Op(instruction: 3) { pointerCounter, memory in
+            let register = memory[pointerCounter + 1]
+            memory[register] = register
+            pointerCounter += 2
+        }
+
+        static let get = Op(instruction: 4) { pointerCounter, memory in
+            let register = memory[pointerCounter + 1]
+            memory[pointerCounter + 1] = register
+            pointerCounter += 2
         }
 
         static let halt = Op(instruction: 99) { $0 = $1.count }
