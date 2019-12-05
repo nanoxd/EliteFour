@@ -42,6 +42,48 @@ struct IntCode {
             pointerCounter += 2
         }
 
+        static let jumpIfTrue = Op(instruction: 5) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 2)
+            let shouldJump = params[0] != 0
+
+            if shouldJump {
+                pointerCounter = params[1]
+            } else {
+                pointerCounter += 3
+            }
+        }
+
+        static let jumpIfFalse = Op(instruction: 6) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 2)
+            let shouldJump = params[0] == 0
+
+            if shouldJump {
+                pointerCounter = params[1]
+            } else {
+                pointerCounter += 3
+            }
+        }
+
+        static let lessThan = Op(instruction: 7) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
+            let register = memory[pointerCounter + 3]
+
+            memory[register] = params[0] < params[1]
+                ? 1 : 0
+
+            pointerCounter += 4
+        }
+
+        static let equals = Op(instruction: 8) { pointerCounter, _, memory in
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 3)
+            let register = memory[pointerCounter + 3]
+
+            memory[register] = params[0] == params[1]
+                ? 1 : 0
+
+            pointerCounter += 4
+        }
+
         static let halt = Op(instruction: 99) { $0 = $2.count }
 
         // MARK: - Utility
