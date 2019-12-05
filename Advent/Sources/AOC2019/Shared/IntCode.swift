@@ -37,8 +37,8 @@ struct IntCode {
         }
 
         static let get = Op(instruction: 4) { pointerCounter, io, memory in
-            let register = memory[pointerCounter + 1]
-            memory[pointerCounter + 1] = register
+            let params = interpret(pointerCounter: pointerCounter, memory: memory, arguments: 1)
+            io = params[0]
             pointerCounter += 2
         }
 
