@@ -185,8 +185,13 @@ class Test2019: XCTestCase {
         let day = Day5()
 
         XCTAssertEqual(
-            day.process(memory: [3, 0, 4, 0, 99]),
+            day.process(memory: [3, 0, 4, 0, 99]).0,
             [0, 0, 4, 0, 99]
+        )
+
+        XCTAssertEqual(
+            day.process(memory: [1002, 4, 3, 4, 33]).0,
+            [1002, 4, 3, 4, 99]
         )
     }
 

@@ -11,7 +11,7 @@ final class Day5: Day {
         ""
     }
 
-    func process(memory: [Int]) -> [Int] {
+    func process(memory: [Int]) -> ([Int], Int) {
         let intcode = IntCode(memory: memory, supportedOperations: [.add, .multiply, .get, .set, .halt])
         return intcode.run()
     }
