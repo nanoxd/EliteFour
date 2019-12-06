@@ -211,6 +211,23 @@ class Test2019: XCTestCase {
 
         XCTAssertEqual(p1, "")
         XCTAssertEqual(p2, "")
+
+    func test_day6Part1_example() {
+        let day = Day6(rawInput: """
+        COM)B
+        B)C
+        C)D
+        D)E
+        E)F
+        B)G
+        G)H
+        D)I
+        E)J
+        J)K
+        K)L
+        """)
+
+        XCTAssertEqual(day.part1(), "42")
     }
 
     func testDay7() {
