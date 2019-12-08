@@ -155,3 +155,111 @@ struct IntCode {
         return (mem, io)
     }
 }
+
+final class IntCode2 {
+    var memory: [Int]
+    var inputs = [Int]()
+    var pointerCounter = 0
+
+    init(memory: [Int], inputs: [Int] = []) {
+        self.memory = memory
+        self.inputs = inputs
+    }
+
+    func executeUntilTermination() -> (outputs: [Int], termination: Int) {
+        var outputs = [Int]()
+
+        while true {
+            let result = step()
+
+            if let output = result.output {
+                outputs.append(output)
+            }
+
+            if let termination = result.termination {
+                return (outputs: outputs, termination: termination)
+            }
+        }
+    }
+
+    func step() -> (output: Int?, termination: Int?) {
+        while true {
+            let opcode = memory[pointerCounter]
+
+            switch opcode % 100 {
+            case 1:
+                operate(operation: +)
+
+            case 2:
+                operate(operation: *)
+
+            case 3:
+                let storeIndex = memory[pointerCounter + 1]
+                memory[storeIndex] = inputs.removeFirst()
+                pointerCounter += 2
+
+            case 4:
+                let value = valueOfMemory(atOffset: 1)
+                pointerCounter += 2
+                return (output: value, termination: nil)
+
+            case 5:
+                jump(ifTrue: true)
+
+            case 6:
+                jump(ifTrue: false)
+
+            case 7:
+                evaluate(operation: <)
+
+            case 8:
+                evaluate(operation: ==)
+
+            case 99:
+                return (output: nil, termination: memory[0])
+
+            default:
+                fatalError()
+            }
+        }
+    }
+
+    private func valueOfMemory(atOffset offset: Int) -> Int {
+        let opcode = memory[pointerCounter]
+        let mode = opcode.digit(atPlace: offset + 1)
+        return mode == 1
+            ? memory[pointerCounter + offset]
+            : memory[memory[pointerCounter + offset]]
+    }
+
+    private func operate(operation: (Int, Int) -> Int) {
+        let storeIndex = memory[pointerCounter + 3]
+        memory[storeIndex] = operation(valueOfMemory(atOffset: 1), valueOfMemory(atOffset: 2))
+        pointerCounter += 4
+    }
+
+    private func evaluate(operation: (Int, Int) -> Bool) {
+        let storeIndex = memory[pointerCounter + 3]
+        memory[storeIndex] = operation(valueOfMemory(atOffset: 1), valueOfMemory(atOffset: 2)) ? 1 : 0
+        pointerCounter += 4
+    }
+
+    private func jump(ifTrue: Bool) {
+        let passes: Bool = {
+            if ifTrue { return valueOfMemory(atOffset: 1) != 0 }
+            else { return valueOfMemory(atOffset: 1) == 0 }
+        }()
+
+        if passes {
+            pointerCounter = valueOfMemory(atOffset: 2)
+        } else {
+            pointerCounter += 3
+        }
+    }
+}
+
+extension Int {
+    func digit(atPlace place: Int) -> Int {
+        self / Int(pow(10, Double(place))) % 10
+    }
+}
