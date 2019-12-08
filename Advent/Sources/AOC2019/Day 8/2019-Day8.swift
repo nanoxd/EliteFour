@@ -26,7 +26,25 @@ final class Day8: Day {
     }
 
     override func part2() -> String {
-        ""
+        let cols = 25
+        let rows = 6
+        var result = Array(repeating: 2, count: cols * rows)
+
+        for layer in layers {
+            for pixel in layer.rawData.enumerated() {
+                if result[pixel.offset] == 2 {
+                    result[pixel.offset] = pixel.element
+                }
+            }
+        }
+
+        return result.enumerated().reduce(into: "") { string, pixel in
+            if (pixel.offset % cols) == 0 {
+                string.append("\n")
+            }
+
+            string.append(pixel.element == 1 ? "#" : " ")
+        }
     }
 
     func imageData(from input: [Int], width: Int, height: Int) -> [Layer] {
