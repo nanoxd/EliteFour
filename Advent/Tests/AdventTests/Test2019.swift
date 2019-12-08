@@ -245,10 +245,20 @@ class Test2019: XCTestCase {
 
     func testDay8() {
         let d = Day8()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "")
+            XCTAssertEqual(p2, "")
+        }
+    }
+
+    func test_day8Part1_examples() {
+        let day = Day8()
+
+        let layers1 = day.imageData(from: "123456789012", width: 3, height: 2)
+        XCTAssertEqual(layers1[0].data, [["123"], ["456"]])
+        XCTAssertEqual(layers1[1].data, [["789"], ["012"]])
     }
 
     func testDay9() {
