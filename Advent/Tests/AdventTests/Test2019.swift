@@ -268,10 +268,12 @@ class Test2019: XCTestCase {
 
     func testDay9() {
         let d = Day9()
-        let (p1, p2) = d.run()
+        measure {
+            let (p1, p2) = d.run()
 
-        XCTAssertEqual(p1, "")
-        XCTAssertEqual(p2, "")
+            XCTAssertEqual(p1, "4080871669")
+            XCTAssertEqual(p2, "")
+        }
     }
 
     func test_day9Part1_examples() {
