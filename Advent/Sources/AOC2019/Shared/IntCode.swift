@@ -160,6 +160,7 @@ final class IntCode2 {
     var memory: [Int]
     var inputs = [Int]()
     var pointerCounter = 0
+    var relativeBase = 0
 
     init(memory: [Int], inputs: [Int] = []) {
         self.memory = memory
@@ -194,8 +195,7 @@ final class IntCode2 {
                 operate(operation: *)
 
             case 3:
-                let storeIndex = memory[pointerCounter + 1]
-                memory[storeIndex] = inputs.removeFirst()
+                memory[pointerApplyingOpcode(atOffset: 1)] = inputs.removeFirst()
                 pointerCounter += 2
 
             case 4:
@@ -214,6 +214,10 @@ final class IntCode2 {
 
             case 8:
                 evaluate(operation: ==)
+            case 9:
+                let value = valueOfMemory(atOffset: 1)
+                relativeBase += value
+                pointerCounter += 2
 
             case 99:
                 return (output: nil, termination: memory[0])
@@ -224,22 +228,42 @@ final class IntCode2 {
         }
     }
 
-    private func valueOfMemory(atOffset offset: Int) -> Int {
+    private func pointerApplyingOpcode(atOffset offset: Int) -> Int {
         let opcode = memory[pointerCounter]
         let mode = opcode.digit(atPlace: offset + 1)
-        return mode == 1
-            ? memory[pointerCounter + offset]
-            : memory[memory[pointerCounter + offset]]
+        let newPointer: Int
+
+        switch mode {
+        case 0:
+            // position
+            newPointer = memory[pointerCounter + offset]
+        case 1:
+            // immediate
+            newPointer = pointerCounter + offset
+        case 2:
+            // relative
+            newPointer = memory[pointerCounter + offset] + relativeBase
+        default:
+            fatalError()
+        }
+
+        allocateMemory(of: newPointer)
+        return newPointer
+    }
+
+    private func valueOfMemory(atOffset offset: Int) -> Int {
+        let index = pointerApplyingOpcode(atOffset: offset)
+        return memory[index]
     }
 
     private func operate(operation: (Int, Int) -> Int) {
-        let storeIndex = memory[pointerCounter + 3]
+        let storeIndex = pointerApplyingOpcode(atOffset: 3)
         memory[storeIndex] = operation(valueOfMemory(atOffset: 1), valueOfMemory(atOffset: 2))
         pointerCounter += 4
     }
 
     private func evaluate(operation: (Int, Int) -> Bool) {
-        let storeIndex = memory[pointerCounter + 3]
+        let storeIndex = pointerApplyingOpcode(atOffset: 3)
         memory[storeIndex] = operation(valueOfMemory(atOffset: 1), valueOfMemory(atOffset: 2)) ? 1 : 0
         pointerCounter += 4
     }
@@ -255,6 +279,11 @@ final class IntCode2 {
         } else {
             pointerCounter += 3
         }
+    }
+
+    private func allocateMemory(of count: Int) {
+        guard count >= memory.count else { return }
+        memory += [Int](repeating: 0, count: count - memory.count + 1)
     }
 }
 

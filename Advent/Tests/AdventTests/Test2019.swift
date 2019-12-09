@@ -274,6 +274,20 @@ class Test2019: XCTestCase {
         XCTAssertEqual(p2, "")
     }
 
+    func test_day9Part1_examples() {
+        let day = Day9()
+
+        let memory1 = [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99]
+        let processedMemory1 = day.process(program: memory1, input: [])
+        XCTAssertEqual(processedMemory1.outputs, memory1)
+
+        let processedMemory2 = day.process(program: [1102, 34_915_192, 34_915_192, 7, 4, 7, 99, 0], input: [])
+        XCTAssertEqual(processedMemory2.outputs.first?.digitCount, 16)
+
+        let processedMemory3 = day.process(program: [104, 1_125_899_906_842_624, 99], input: [])
+        XCTAssertEqual(processedMemory3.outputs.first, 1_125_899_906_842_624)
+    }
+
     func testDay10() {
         let d = Day10()
         let (p1, p2) = d.run()
