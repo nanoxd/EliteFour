@@ -14,7 +14,8 @@ final class Day9: Day {
     }
 
     override func part2() -> String {
-        ""
+        let processedMemory = process(program: programValues, input: [2])
+        return "\(processedMemory.outputs.first ?? 0)"
     }
 
     func process(program: [Int], input: [Int]) -> (outputs: [Int], termination: Int) {
