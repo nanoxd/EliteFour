@@ -20,16 +20,30 @@ final class Day10: Day {
         )
     }()
 
-    /// Find the best location for a new monitoring station.
-    /// How many other asteroids can be detected from that location?
-    override func part1() -> String {
-        let result = analyzeMap().map { $0.value.count }.max()!
+    override func run() -> (String, String) {
+        // Part 1
+        let station = analyzeMap()
+            .max { $0.value.count < $1.value.count }!
 
-        return "\(result)"
+        let part1 = "\(station.value.count)"
+
+        // Part 2
+
+        let stationPoint = station.key
+        var vaporizeList = [Point]()
+
+        while vaporizeList.count < 200 {
+            let remaining = map.filter { !vaporizeList.contains($0) }
+            let visibleAsteroids = visible(in: remaining, for: stationPoint)
+            vaporizeList.append(contentsOf: visibleAsteroids)
+        }
+
+        let number200 = vaporizeList[199]
+        let part2 = "\(number200.x * 100 + number200.y)"
+
+        return (part1, part2)
     }
 
-    override func part2() -> String {
-        ""
     func analyzeMap() -> [Point: Set<Double>] {
         map.reduce(into: [Point: Set<Double>]()) { dict, point in
             let others = map.filter { $0 != point }
@@ -40,5 +54,16 @@ final class Day10: Day {
 
             dict[point] = angleSet
         }
+    }
+
+    func visible(in asteroidField: Set<Point>, for point: Point) -> [Point] {
+        let angles = asteroidField.reduce(into: [Double: Point]()) { dict, asteroid in
+            let angle = point.angle(to: asteroid)
+            let current = dict[angle]
+            if current == nil || point.manhattanDistance(to: current!) > point.manhattanDistance(to: asteroid) {
+                dict[angle] = asteroid
+            }
+        }
+        return angles.sorted { $0.key < $1.key }.map { $0.value }
     }
 }
